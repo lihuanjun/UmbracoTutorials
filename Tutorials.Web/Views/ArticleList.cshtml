@@ -1,0 +1,28 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+    Layout = "WithSubNavigation.cshtml";
+    var pageSize = Model.Content.GetPropertyValue<int>("pageSize");
+    var childrens = Model.Content.Children.Where(x => x.IsVisible())
+        .OrderByDescending(x => x.UpdateDate).Take(pageSize);
+    if (childrens != null && childrens.Count() > 0)
+    {
+        <ul>
+            @foreach (IPublishedContent children in childrens)
+            {
+                <li>
+                    @if (children.HasProperty("listCoverImage"))
+                    {
+                        var listCoverImage = children.GetPropertyValue<int>("listCoverImage");
+                        var mediaItem = Umbraco.Media(listCoverImage);
+                        if (mediaItem != null)
+                        {
+                            var src = mediaItem.UmbracoFile;
+                            <img src="@src" class="img-responsive" />
+                        }
+                    }
+                    <a href="@children.Url">@children.GetPropertyValue("pageTitle")</a>
+                </li>
+            }
+        </ul>
+    }
+}

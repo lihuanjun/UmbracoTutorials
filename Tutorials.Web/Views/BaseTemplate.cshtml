@@ -1,0 +1,46 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+    Layout = null;
+    var root = Model.Content.AncestorOrSelf("homepage");
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content="charset=utf-8" />
+    <meta name="description" content="@CurrentPage.metaDescription">
+    <meta name="keywords" content="@CurrentPage.metaKeyword">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <title>@CurrentPage.title</title>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-inverse">
+            <ul class="nav navbar-nav">
+                @if (root.Id == Model.Content.Id)
+                {
+                    <li class="active"><a href="@root.Url">@root.Name</a></li>
+                }
+                else
+                {
+                    <li><a href="@root.Url">@root.Name</a></li>
+                }
+
+                @foreach (IPublishedContent children in root.Children.Where(x => x.IsVisible()))
+                {
+                    if (Model.Content.Url.IndexOf(children.Url) >= 0)
+                    {
+                        <li class="active"><a href="@children.Url">@children.Name</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="@children.Url">@children.Name</a></li>
+                    }
+                }
+            </ul>
+        </nav>
+        @RenderBody()
+    </div>
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
+</html>

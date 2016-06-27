@@ -1,0 +1,7 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+	Layout = "WithSubNavigation.cshtml";
+}
+
+<h1>@Model.Content.GetPropertyValue("pageTitle")</h1>
+<p>@Model.Content.GetPropertyValue("mainContent")</p>

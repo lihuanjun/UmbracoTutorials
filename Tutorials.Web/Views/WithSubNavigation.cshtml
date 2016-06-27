@@ -1,0 +1,31 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@using System.Text;
+@{
+    Layout = "BaseTemplate.cshtml";
+    var root = Model.Content.AncestorOrSelf(2);
+    var current = Model.Content;
+    StringBuilder bread = new StringBuilder();
+    bread.AppendFormat("<li>{0}</li>", current.Name);
+}
+<div class="row">
+    <div class="col-md-3">
+        <div class="sub-navigation">
+            @Html.Partial("SubNavigation", (IPublishedContent)root)
+        </div>
+    </div>
+    <div class="col-md-6">
+        <ol class="breadcrumb">
+            @{ 
+                while (current.Id != root.Id)
+                {
+                    current = Model.Content.Parent;
+                    bread.Insert(0, string.Format("<li><a href='{1}'>{0}</a></li>", current.Name, current.Url));
+                }
+                bread.Insert(0, string.Format("<li><a href='{1}'>{0}</a></li>", "首页", "/"));
+                @Html.Raw(bread.ToString());
+            }
+        </ol>
+        @RenderBody()
+    </div>
+    <div class="col-md-3"></div>
+</div>

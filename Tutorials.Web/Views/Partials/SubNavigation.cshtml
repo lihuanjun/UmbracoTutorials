@@ -1,0 +1,22 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<IPublishedContent>
+<ul class="nav">
+    @foreach (IPublishedContent children in Model.Content.Children)
+    {
+        if (children.Children.Count() > 0)
+        {
+            <li>
+                <ul>
+                    @foreach (IPublishedContent grandson in children.Children)
+                    {
+                        <li><a href="@grandson.Url">@grandson.Name</a></li>
+                    }
+                </ul>
+            </li>
+        }
+        else
+        {
+            <li><a href="@children.Url">@children.Name</a></li>
+        }
+    }
+</ul>
+

@@ -1,0 +1,17 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+	Layout = "BaseTemplate.cshtml";
+}
+@{
+    if (Model.Content.HasProperty("mainKeyVision"))
+    {
+        var keyVision = Model.Content.GetPropertyValue<int>("mainKeyVision");
+        var mediaItem = Umbraco.Media(keyVision);
+        if (mediaItem != null)
+        {
+            var src = mediaItem.UmbracoFile;
+            <div><img src="@src" class="img-responsive" /></div>
+        }
+    }
+}
+    
